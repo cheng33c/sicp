@@ -1,0 +1,4 @@
+#lang planet neil/sicp
+
+(define (str2int str)
+  (string->list str))

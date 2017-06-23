@@ -1,0 +1,10 @@
+(define pi (* 4 (atan 1.0)))
+(define (deg_2_pi deg) (* deg (/ pi 180)))
+(define (ff-time vy)
+  (/ (* 2.0 vy) 9.8))
+(define (dx vx t)
+  (* vx t))
+(define (distance v ang)
+  (dx
+   (* v (cos (deg_2_pi ang)))
+   (ff-time (* v (sin (deg_2_pi ang))))))

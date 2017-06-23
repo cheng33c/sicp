@@ -1,0 +1,6 @@
+#lang planet neil/sicp
+
+(define (list-sum-tail ls)
+  (list-sum-rec ls 0))
+
+(define (list-sum-rec ls 0))

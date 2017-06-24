@@ -1,0 +1,8 @@
+#lang planet neil/sicp
+
+(define (my-reverse-let ls)
+  (let loop((ls0 (car ls)))
+    (if (null? ls0)
+        ls
+        (let ((ls (cons ls0 (cdr ls))))
+          (loop ls)))))

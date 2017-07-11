@@ -8,4 +8,4 @@
           (else (fast-except-iter (* a b) b (- n 1)))))
   (fast-except-iter 1 b n))
 
-(fast-except-iter 5 1000)
+(fast-except-iter 5 100023)

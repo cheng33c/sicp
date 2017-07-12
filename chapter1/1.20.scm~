@@ -1,0 +1,8 @@
+#lang planet neil/sicp
+
+(define (gcd a b count)
+  (if (= b 0)
+      count
+      (gcd b (remainder a b (+ count 1)))))
+
+(gcd 206, 40)

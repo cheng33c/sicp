@@ -1,4 +1,4 @@
-#lang sicp
+#lang planet neil/sicp
 
 (define (expmod base exp m)
   (cond ((= exp 0) 1)

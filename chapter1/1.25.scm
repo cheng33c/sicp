@@ -1,15 +1,21 @@
 #lang planet neil/sicp
 
+;;; 这个程序非常慢。
+;;; 费马检查在对一个非常大的数进行素数检测的时候,需要计算一个很大的乘幂
+;;; 比如说,求十亿的一亿次方,这种非常大的数值计算的速度非常慢,而且很容易因为超出实现的限制而造成溢出。
+;;; expmod 函数,通过每次对乘幂进行 remainder 操作,从而将乘幂限制在一个很小的范围内(不超过参数 m
+;;; 这样可以最大限度地避免溢出,而且计算速度快得多
+
+
 (define (square x) (* x x))
 
-(define (even? n) (= (remainder n 2) 0))
+(define (fast-expt b n)
+  (cond ((= n 0) 1)
+        ((even? n) (square (fast-expt b (/ n 2))))
+        (else (* b (fast-expt b (- n 1))))))
 
 (define (expmod base exp m)
-  (cond ((= exp 0) 1)
-        ((even? exp)
-         (remainder (square (expmod base (/ exp 2) m)) m))
-        (else
-         (remainder (* base (expmod base (- exp 1) m)) m))))
+  (remainder (fast-expt base exp) m))
 
 (define (fermat-test n)
   (define (try-it a)
@@ -35,6 +41,7 @@
   (display n)
   (display " *** ")
   (display elapsed-time))
+
 
 
 (timed-prime-test 1009) 

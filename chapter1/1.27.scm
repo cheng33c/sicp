@@ -1,4 +1,6 @@
-#lang sicp
+#lang planet neil/sicp
+
+(define (square x) (* x x))
 
 (define (expmod base exp m)
   (cond ((= exp 0) 1)
@@ -17,4 +19,21 @@
         ((fermat-test n) (fast-prime? n (- times 1)))
         (else false)))
 
+(define (congruent? a n)
+    (= (expmod a n n) a))
+
 (define (prime? n) (fast-prime? n 100))
+
+(define (carmichael n)
+  (define (fermat-test a n)
+    (cond ((= a n) #t)
+          ((congruent? a n) (fermat-test (+ a 1) n))
+          (else #f)))
+  (fermat-test 2 n ))
+
+(carmichael 561)
+(carmichael 1105)
+(carmichael 1729)
+(carmichael 2465)
+(carmichael 2821)
+(carmichael 6601)

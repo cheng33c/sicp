@@ -1,5 +1,4 @@
 #lang planet neil/sicp
-(load "1.22-O.scm")
 
 (define (next n) (+ n 2))
 
@@ -43,3 +42,6 @@
 (search-for-primes 10000)
 (search-for-primes 100000)
 (search-for-primes 1000000)
+
+
+;;; 讨论 10000 100000比值在1左右， 100000 1000000在1 - 1.5

@@ -1,5 +1,3 @@
-;; 这道虽然题目长，还是挺简单的.
-
 #lang planet neil/sicp
 
 (define (square x) (* x x))

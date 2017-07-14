@@ -1,3 +1,5 @@
+#lang planet neil/sicp
+
 (define (square x) (* x x))
 
 (define (smallest-divisor n)
@@ -37,10 +39,18 @@
       (search begin)))
 
 
-(search-for-primes 1000)
-(search-for-primes 10010)
-(search-for-primes 100000)
-(search-for-primes 1000000)
+(timed-prime-test 1009) 
+(timed-prime-test 1013) 
+(timed-prime-test 1019) 
+(timed-prime-test 10007) 
+(timed-prime-test 10009) 
+(timed-prime-test 10037) 
+(timed-prime-test 100003) 
+(timed-prime-test 100019) 
+(timed-prime-test 100043) 
+(timed-prime-test 1000003) 
+(timed-prime-test 1000033) 
+(timed-prime-test 1000037)
 
 ;;; 1009 *** 87 10007 *** 12 100003 *** 36 1000003 *** 110
 ;;; 1009 *** 40 10007 *** 11 100003 *** 33 1000003 *** 90

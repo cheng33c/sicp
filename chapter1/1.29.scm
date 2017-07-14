@@ -8,20 +8,24 @@
       (+ (term a)
          (sum term (next a) next b))))
 
-(define (simpson term a b n)
+(define (next-even n)
+    (if (even? n)
+        n
+        (+ n 1)))
 
-  (define h (/ (- b a) n))
-  (define (try-it k result)
-    (cond ((> k n) result)
-          ((or (= k n) (= k 0))
-           (try-it (+ k 1) (+ result (term (+ a (* k h))))))
-          (else (if (even? n)
-                    (try-it (+ k 1) (+ result (* (term (+ a (* k h))) 4)))
-                    (try-it (+ k 1) (+ result (* (term (+ a (* k h))) 2)))))))
+(define (simpson f a b n)
+  
+  (define h (/ (- b a) (next-even n)))
 
-  (if (even? n)
-      (* (/ h 3) (try-it 0 0))
-      #f))
+  (define (simpson-term k)
+    (define y (f (+ a (* k h))))
+    (if (or (= k 0) (= k (next-even n)))
+        y
+        (if (even? k)
+            (* 2 y)
+            (* 4 y))))
+
+  (* (/ h 3) (sum simpson-term 0 inc (next-even n))))
 
 (simpson cube 0 1 100)
 (simpson cube 0 1 1000)

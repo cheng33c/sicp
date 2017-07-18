@@ -7,9 +7,6 @@
         (iter (next a) (combiner (term a) null-value))))
   (iter a null-value))
 
-
-
-
 (define (accumulate2 combiner null-value term a next b)
   (define (rec a null-value)
     (if (> a b)

@@ -1,0 +1,12 @@
+#lang planet neil/sicp
+
+(define (con-frac n d k)
+  (define (rec cur)
+    (if (= cur k)
+        (/ n d)
+        (+ d (con-frac (+ cur 1)))))
+  (rec 1))
+
+(con-frac (lambda (i) 1.0)
+          (lambda (i) 1.0)
+          10)

@@ -1,0 +1,6 @@
+#lang planet neil/sicp
+
+(define (cubic a b c)
+  (+ (* x x x)
+     (* a (* x x))
+     c))

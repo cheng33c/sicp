@@ -1,0 +1,10 @@
+#lang planet neil/sicp
+
+(define (repeated f times)
+  (lambda (x)
+    (if (= times 0)
+        f
+        (repeated (f f) (- times 1)))))
+
+(define (square x) (* x x))
+((repeated square 2) 5)

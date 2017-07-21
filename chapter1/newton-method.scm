@@ -16,7 +16,6 @@
 (define (average-damp f)
   (lambda (x) (average x (f x))))
 
-;;; 为什么可以这么调用？
 ((average-damp (lambda (x) (* x x))) 10)
 
 (define (deriv g)

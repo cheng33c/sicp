@@ -1,0 +1,11 @@
+#lang planet neil/sicp
+
+(define (cons a b)
+  (* (expt 2 a)
+     (expt 3 b)))
+
+(define (car x)
+  (if (= (remainder x 2) 0)
+      x
+      (+ 1 (car (/ x 2)))
+      0))

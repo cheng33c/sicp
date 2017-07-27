@@ -43,3 +43,4 @@
 
 (percent '(1 3))
 (make-center-percent 2 (percent '(2 3)))
+(make-center-percent 10 0.5)

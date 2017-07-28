@@ -1,0 +1,6 @@
+#lang planet neil/sicp
+
+(define (last-elem my)
+  (if (null? (cdr my))
+      (car my)
+      (last-elem (cdr my))))

@@ -53,9 +53,9 @@
 
 
 ;;;检查结果
-(define R1 (make-center-width 40000 0.001))
+(define R1 (make-center-width 40000 0.5))
  
-(define R2 (make-center-width 80000 0.001))
+(define R2 (make-center-width 80000 0.5))
 
 (center (par1 R1 R2))
 (percent (par1 R1 R2))

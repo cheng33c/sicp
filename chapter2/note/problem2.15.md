@@ -1,0 +1,27 @@
+Eva is correct in saying that par2 will produce tighter error bounds than par1, at least for intervals whose widths are greater than the rounding error introduced by the computer's finite-precision arithmetic operations.
+
+Note that an interval operation cannot reduce the uncertainty of the system; how can we remove uncertainty from an uncertain calculation? Each uncertain value used in an interval computation increases the uncertainty of the answer.
+
+If its arguments r1 and/or r2 are uncertain values (i.e., they have non-zero width), par1 will produce an overly pessimistic error bound for the computed parallel resistance because it uses the uncertain values r1 and r2 twice each in two different computations. By treating each distinct use of r1 and r2 in the computation as distinct uncertain values, par1 overcompensates. The two distinct occurrences of r1 in the calculation refer to one actual resistor, not two resistors with the same uncertainty. Stated another way, the value that r1 may take is somewhere within its interval, but whatever value it does take, it's the same value for both occurrences of r1 in the procedure. The interval arithmetic system we've devised doesn't have a way of communicating that the uncertainty of any given value should only be accounted for once in the computation.
+
+By using the values of r1 and r2 only once each in its computation, procedure par2 does not overcompensate for the range of uncertainty of these values. Each value's uncertainty is introduced into the calculation only once. par2 does use the interval one in several places, but this interval has zero uncertainty, so repeated uses of one don't add any uncertainty to the computation.
+
+Whether the fact that par2 produces tighter error bounds makes par2 qualitatively "better" than par1 is a matter of judgement, and depends at least partially on the application.
+
+
+Google翻译：
+
+Eva正确地说，par2将产生比par1更严格的误差范围，至少对于宽度大于计算机有限精度算术运算引入的舍入误差的间隔
+
+注意，间隔操作不能降低系统的不确定性;如何从不确定的计算中消除不确定性？
+在间隔计算中使用的每个不确定值都增加了答案的不确定性。
+
+如果其参数r1和（或者）r2是不确定的值（即它们具有非零宽度），则par1将对计算出的并联电阻产生过度悲观的误差界限，因为它在两次不同的计算中使用不确定值r1和r2两次。通过将计算中的每个不同的使用r1和r2作为不同的不确定值，par1过补偿。计算中r1的两个不同的出现是指一个实际的电阻，而不是两个具有相同不确定度的电阻。换句话说，r1可能需要的值在其间隔的某处，但是无论它采取什么价值，对于过程中的两次出现，都是相同的值。我们设计的间隔算术系统没有一种沟通方式，任何给定值的不确定性只能在计算中被计算一次。
+
+通过在其计算中仅使用r1和r2的值，程序par2不会对这些值的不确定性范围进行过度补偿。每个值的不确定性仅被引入计算一次。 par2在几个地方使用间隔1，但是这个间隔没有不确定性，所以反复使用一个不会给计算增加任何不确定性。
+
+无论par2是否产生更严格的误差范围，par2在质量上比par1更好“是一个判断问题，至少部分依赖于应用程序。
+
+
+我的理解：
+简单的说就是多次使用**有误差的不确定性变量**会带来更大的误差，而只使用一次**有误差的不确定性变量**则会减小这个问题。

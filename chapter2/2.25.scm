@@ -12,4 +12,3 @@
 ;; 所以每次我们要脱一层的列表都要进行一次(car (cdr z))
 (define z (list 1 (list 2 (list 3 (list 4 (list 5 (list 6 7)))))))
 (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr z))))))))))))
-

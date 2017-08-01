@@ -1,0 +1,7 @@
+#lang planet neil/sicp
+
+(define (subsets a)
+  (if (null? a)
+      (list nil)
+      (let ((rest (subsets (cdr s))))
+        (append rest (map (car rest) rest)))))

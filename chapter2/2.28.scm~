@@ -1,0 +1,10 @@
+#lang planet neil/sicp
+
+(define (fringe tree)
+  (define (iter remained-items result)
+    (if (null? remained-items)
+        result
+        (iter (cdr remained-items)
+              (if (pair? (car remained-items))
+                  (iter (car remained-items result))
+                  (append result (car remained-items)))))))

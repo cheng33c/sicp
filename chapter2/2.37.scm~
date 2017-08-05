@@ -1,0 +1,14 @@
+#lang planet neil/sicp
+
+(define (dot-product v w)
+  (accumulate + 0 (map * v w)))
+
+(define (matrix-*-vector m v)
+  (map <??> m))
+
+(define (transpose mat)
+  (accumulate-n <??> <??> mat))
+
+(define (martix-*-martix m n)
+  (let ((cols (transpose n)))
+    (map <??> m)))

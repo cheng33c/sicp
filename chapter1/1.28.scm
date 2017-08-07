@@ -1,5 +1,6 @@
 #lang planet neil/sicp
 
+
 (define (square x) (* x x))
 (define (even? x) (= (remainder x 2) 0))
 

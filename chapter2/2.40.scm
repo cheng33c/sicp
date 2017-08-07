@@ -64,16 +64,18 @@
 (define (prime-sum-pairs n)
   (map make-pair-sum
        (filter prime-sum?
-               (flatmap
-                (lambda (i)
-                  (map (lambda (j) (list i j))
-                       (enumerate-interval 1 (- i 1))))
-                (enumerate-interval 1 n)))))
+               (unique-pairs n))))
 
+;; unique-pairs --- let `prime-sum-pairs` easier
+(define (unique-pairs n)
+  (flatmap
+   (lambda (i)
+     (map (lambda (j) (list i j))
+          (enumerate-interval 1 (- i 1))))
+   (enumerate-interval 1 n)))
 
-;; lambda (i) test
-((lambda (i)
-   (map (lambda (j) (list i j))
-        (enumerate-interval 1 (- i 1)))) 4)
+;; test unique-pairs 
+;; (unique-pairs 5)
 
+;; test `prime-sum-pairs` use `unique-pairs`
 (prime-sum-pairs 6)

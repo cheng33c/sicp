@@ -1,34 +1,5 @@
 #lang planet neil/sicp
 
-;; prime 
-(define (square x) (* x x))
-(define (even? x) (= (remainder x 2) 0))
-
-(define (miller-rabin n)
-  
-  (define (expmod base exp m)
-    (cond ((= exp 0) 1)
-          ((even? exp)
-           (remainder (square (expmod base (/ exp 2) m))
-                      m))
-          (else
-           (remainder (* base (expmod base (- exp 1) m))
-                      m))))
-
-  (define (prime? n) 
-    (define (fast-prime? n times)
-      (cond ((= times 0) true)
-            ((try-it n) (fast-prime? n (- times 1)))
-            (else false)))
-    (fast-prime? n 100))
-  
-  (define (try-it a)
-    (if (= (expmod (+ 1 (random (- n 1))) (- n 1) n) 1)
-        #t
-        #f))
-
-  (prime? n))
-
 (define (filter proc sequence)
   (cond ((null? sequence) nil)
         ((proc (car sequence))
@@ -45,8 +16,13 @@
 (define (flatmap proc seq)
   (accumulate append nil (map proc seq)))
 
+(define (prime? n)
+  (if (= (remainder n 2) 1)
+      #t
+      #f))
+
 (define (prime-sum? pair)
-  (miller-rabin (+ (car pair) (car (cdr pair)))))
+  (prime? (+ (car pair) (car (cdr pair)))))
 
 (define (make-pair-sum pair)
   (list (car pair) (car (cdr pair)) (+ (car pair) (car (cdr pair)))))
@@ -69,11 +45,3 @@
                   (map (lambda (j) (list i j))
                        (enumerate-interval 1 (- i 1))))
                 (enumerate-interval 1 n)))))
-
-
-;; lambda (i) test
-((lambda (i)
-   (map (lambda (j) (list i j))
-        (enumerate-interval 1 (- i 1)))) 4)
-
-(prime-sum-pairs 6)

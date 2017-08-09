@@ -1,0 +1,19 @@
+#lang planet neil/sicp
+
+(define (make-vect x y) (cons x y))
+
+(define (xcor-vect vec) (car vec))
+
+(define (ycor-vect vec) (cadr vec))
+
+(define (add-vect vec1 vec2)
+  (cons (+ (xcor-vect vec1) (xcor-vect vec2))
+        (+ (ycor-vect vec1) (ycor-vect vec2))))
+
+(define (sub-vect vec1 vec2)
+  (cons (- (xcor-vect vec1) (xcor-vect vec2))
+        (- (ycor-vect vec1) (ycor-vect vec2))))
+
+(define (scale-vect s vec)
+  (cons (* (xcor-vect vec1) s)
+        (* (ycor-vect vec1) s)))

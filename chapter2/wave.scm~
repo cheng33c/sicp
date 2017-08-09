@@ -1,0 +1,4 @@
+#lang planet neil/sicp
+
+(define wave2
+  (beside wave (flip-vert wave)))

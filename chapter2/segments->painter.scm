@@ -8,4 +8,3 @@
         ((frame-coord-map frame) (start-segment segment))
         ((frame-corrd-map frame) (end-segment segment))))
      segment-list)))
-

@@ -15,8 +15,8 @@
         (- (ycor-vect vec1) (ycor-vect vec2))))
 
 (define (scale-vect s vec)
-  (cons (* (xcor-vect vec1) s)
-        (* (ycor-vect vec1) s)))
+  (cons (* (xcor-vect vec) s)
+        (* (ycor-vect vec) s)))
 
 
 

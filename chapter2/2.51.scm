@@ -4,6 +4,7 @@
 ;; with the painter
 
 ;; require code
+;; define painter
 (require graphics/graphics)
 (open-graphics)
 (define vp (open-viewport "A Picture Language" 500 500))
@@ -74,7 +75,7 @@
         (k (make-vect 1 0.7))
         (l (make-vect 0.3 0.7))
         (m (make-vect 1 0.8))
-        (x (make-vect 0.35 0.45)) ;; 这个点是忘记了,临时添加的
+        (x (make-vect 0.35 0.45))
         (n (make-vect 0.4 0.5))
         (o (make-vect 0.65 0.6))
         (p (make-vect 0.35 1))
@@ -115,7 +116,6 @@
                  (make-segment c d))))
       (segments->painter segment-list))))
 
-;; main part
 (define (transform-painter painter origin corner1 corner2)
   (lambda (frame)
     (let ((m (frame-coord-map frame)))
@@ -140,9 +140,35 @@
         (paint-left frame)
         (paint-right frame)))))
 
+;; main code
+
+(define (below1 painter1 painter2)
+  (let ((split-point (make-vect 0.0 0.5)))
+    (let ((paint-up
+           (transform-painter painter1
+                              (make-vect 0.0 0.0)
+                              (make-vect 1.0 0.0)
+                              split-point))
+          (paint-down
+           (transform-painter painter2
+                              split-point
+                              (make-vect 1.0 0.5)
+                              (make-vect 0.0 1.0))))
+      (lambda (frame)
+        (paint-up frame)
+        (paint-down frame)))))
+
+(define (below-rotate painter1 painter2)
+  (transform-painter (beside painter1 painter2)
+                     (make-vect 1.0 0.0)
+                     (make-vect 1.0 1.0)
+                     (make-vect 0.0 0.0)))
+
 ;; test
 ;; define a frame where painter draw in and the size of frame
 (define frame-a (make-frame (make-vect 0 200) (make-vect 200 0) (make-vect 0 200)))
+(define frame-b (make-frame (make-vect 0 0) (make-vect 200 0) (make-vect 0 200)))
 
 ;;(beside (wave-painter frame-a) (diamond-painter frame-b))
-((beside wave-painter diamond-painter) frame-a)
+((below1 wave-painter diamond-painter) frame-a)
+((below1 wave-painter diamond-painter) frame-b)

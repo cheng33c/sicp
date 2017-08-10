@@ -15,24 +15,6 @@
                      (sub-vect (m corner1) new-origin)
                      (sub-vect (m corner2) new-origin)))))))
 
-(define (flip-vert painter)
-  (transform-painter painter
-                     (make-vect 0.0 1.0)
-                     (make-vect 1.0 1.0)
-                     (make-vect 0.0 0.0)))
-
-(define (shrink-to-upper-right painter)
-  (transform-painter painter
-                     (make-vect 0.5 0.5)
-                     (make-vect 1.0 0.5)
-                     (make-vect 0.5 1.0)))
-
-(define (rotate90 painter)
-  (transform-painter painter
-                     (make-vect 1.0 0.0)
-                     (make-vect 1.0 1.0)
-                     (make-vect 0.0 0.0)))
-
 (define (squash-inwards painter)
   (transform-painter painter
                      (make-vect 0.0 0.0)

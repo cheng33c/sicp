@@ -170,16 +170,6 @@
                  (make-segment smile-p2 smile-p3))))
       (segments->painter segment-list))))
 
-
-;; test problem a)
-;; define a frame where painter draw in and the size of frame
-;;(define frame-a (make-frame (make-vect 0 200) (make-vect 200 0) (make-vect 0 200)))
-
-;;(wave-painter frame-a)
-
-
-
-;; problem b)
 (define (corner-split painter n)
   (if (= n 0)
       painter
@@ -190,13 +180,6 @@
               (corner (corner-split painter (- n 1))))
           (beside (below painter top-left)
                   (below bottom-right corner))))))
-
-;; test problem b)
-(define frame-b (make-frame (make-vect 0 0) (make-vect 200 0) (make-vect 0 200)))
-;;((corner-split wave-painter 5) frame-b)
-
-;; problem c)
-
 
 (define (square-of-four tl tr bl br)
   (lambda (painter)

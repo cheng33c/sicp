@@ -1,5 +1,8 @@
 #lang planet neil/sicp
 
+;; can't run
+;; a example
+
 (define (corner-split painter n)
   (if (= n 0)
       painter

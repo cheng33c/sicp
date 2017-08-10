@@ -1,4 +1,0 @@
-(define (index-x ls x index)
-  (cond ((= (car ls) x) index)
-        ((null? ls) #f)
-        (index-x (cdr ls) x (+ index 1))))

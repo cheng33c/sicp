@@ -1,8 +1,0 @@
-#lang planet neil/sicp
-
-(define (make-rat n d)
-  (let ((g ((if (< d 0)
-                (-n -d)
-                (n d)))))
-    (cons (/ n g) (/ d g))))
-

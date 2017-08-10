@@ -1,4 +1,0 @@
-#lang planet neil/sicp
-
-(define (my-reverse-do ls)
-  (do ((ls0 ls1)) ((cons (car ls1) ls0) (cdr ls1)) ((if (null? ls1) ls0))))

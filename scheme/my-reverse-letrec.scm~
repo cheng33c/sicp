@@ -1,8 +1,0 @@
-#lang planet neil/sicp
-
-(define (my-reverse-letrec ls)
-  (letrec ((iter (lambda (reverse-letrec ls0 ls)
-                   (if (null? ls)
-                       ls0
-                       (iter (cons (car ls) ls0) (cdr ls))))))
-    (iter ls())))

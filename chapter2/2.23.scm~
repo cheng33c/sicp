@@ -1,4 +1,0 @@
-#lang planet neil/sicp
-
-(define (for-each proc ls)
-  (map proc ls))

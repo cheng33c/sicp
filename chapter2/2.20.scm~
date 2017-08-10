@@ -1,7 +1,0 @@
-#lang planet neil/sicp
-
-(define (same-parity . w)
-  (define (iter my ls)
-    (if (null? ls)
-        my
-        (cons (car my) (cdr (cdr my))))))

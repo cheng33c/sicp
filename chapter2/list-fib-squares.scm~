@@ -1,8 +1,0 @@
-#lang planet neil/sicp
-
-(define (list-fib-square n)
-  (accumulate cons
-              nil
-              (map square
-                   (map fib
-                        (enumerate-interval 0 n)))))

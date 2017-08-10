@@ -1,7 +1,0 @@
-#lang planet neil/sicp
-
-(define (ls-sum-let ls)
-  (let loop((ls0 (car ls)) (sum 0))
-    (if (null? ls0)
-        sum
-        (loop((cdr ls) (+ sum ls0))))))

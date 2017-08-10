@@ -1,6 +1,0 @@
-#lang planet neil/sicp
-
-(define zero (lambda (f) (lambda (x) x)))
-
-(define (add-l n)
-  (lambda (f) (lambda (x) (f ((n f)) x))))

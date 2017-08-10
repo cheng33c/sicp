@@ -1,9 +1,0 @@
-#lang planet neil/sicp
-
-(define (double g)
-  (lambda (x)
-    (g x)
-    (g x)))
-
-(define (inc x) (+ x 1))
-((double inc) 1)

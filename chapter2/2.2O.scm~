@@ -1,8 +1,0 @@
-#lang planet neil/sicp
-
-(define (make-point x y)
-  (cons x y))
-
-(define (make-segment x1 y1 x2 y2)
-  (make-point x1 y1)
-  (make-point x2 y2))

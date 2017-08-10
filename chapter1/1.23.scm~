@@ -1,4 +1,0 @@
-#lang planet neil/sicp
-(load "1.22-O.scm")
-
-(define ())

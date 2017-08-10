@@ -1,6 +1,0 @@
-#lang planet neil/sicp
-
-(define (reverse my)
-  (if (null? my)
-      (list my)
-      (cons (reverse my) (car my))))

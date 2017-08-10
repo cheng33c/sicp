@@ -2,7 +2,7 @@
 
 (require graphics/graphics)
 (open-graphics)
-(define vp (open-viewport "2.49 Solution" 500 500))
+(define vp (open-viewport "2.49 Solution" 800 800))
 
 (define draw (draw-viewport vp))
 (define (clear) ((clear-viewport vp)))
@@ -10,8 +10,7 @@
 (define (drawline begine end)
   (line
    (make-posn (car begine) (cadr begine)) 
-   (make-posn (car end) (cadr end)))
-  )
+   (make-posn (car end) (cadr end))))
 
 ;; require
 (define (make-vect x y) (list x y))
@@ -147,11 +146,14 @@
       (segments->painter segment-list))))
 
 
-;; define a frame where painter draw in
+;; define a frame where painter draw in and the size of frame
 (define frame-a (make-frame (make-vect 0 200) (make-vect 200 0) (make-vect 0 200)))
+(define frame-b (make-frame (make-vect 0 0) (make-vect 200 0) (make-vect 0 200)))
+(define frame-c (make-frame (make-vect 0 400) (make-vect 200 0) (make-vect 0 200)))
+(define frame-d (make-frame (make-vect 200 400) (make-vect 200 0) (make-vect 0 200)))
 
 ;; test painter
-;;(outline-painter frame-a)
-;;(fork-painter frame-a)
-;;(diamond-painter frame-a)
-(wave-painter frame-a)
+(outline-painter frame-a)
+(fork-painter frame-b)
+(diamond-painter frame-c)
+(wave-painter frame-d)

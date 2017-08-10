@@ -1,5 +1,6 @@
 #lang planet neil/sicp
 
+
 ;; require
 (define (sub-vect vec1 vec2)
   (map - vec1 vec2))

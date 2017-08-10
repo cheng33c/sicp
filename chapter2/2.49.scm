@@ -146,9 +146,11 @@
                  (make-segment o m))))
       (segments->painter segment-list))))
 
-;; test outline-drawer
+
 ;; define a frame where painter draw in
 (define frame-a (make-frame (make-vect 0 200) (make-vect 200 0) (make-vect 0 200)))
+
+;; test painter
 ;;(outline-painter frame-a)
 ;;(fork-painter frame-a)
 ;;(diamond-painter frame-a)

@@ -10,7 +10,8 @@
 
 ;; main part
 (define (union-set set1 set2)
-  (cond ((or (null? set1) (null? set2)) set2)
+  (cond ((null? set1) set2)
+        ((null? set2) set1)
         ((or (number? set1) (number? set2))
          (error "number is not set"))
         ((element-of-set? (car set1) set2)

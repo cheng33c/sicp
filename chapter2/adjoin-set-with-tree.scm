@@ -23,3 +23,5 @@
                     (adjoin-set x (right-branch set))))))
 
 
+;; test
+(adjoin-set 5 (make-tree 3 nil nil))

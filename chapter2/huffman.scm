@@ -31,7 +31,9 @@
 
 ;; test
 (define mytree (make-code-tree
-                (make-leaf 'A 1)
+                (make-leaf (make-code-tree
+                            (make-leaf 'A 1)
+                            (make-leaf 'D 9)) 10)
                 (make-leaf 'C 2)))
 
 (left-branch mytree)

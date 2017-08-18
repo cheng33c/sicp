@@ -29,3 +29,15 @@
       (weight-leaf tree)
       (caddr tree)))
 
+;; test
+(define mytree (make-code-tree
+                (make-leaf 'A 1)
+                (make-leaf 'C 2)))
+
+(left-branch mytree)
+(newline)
+(right-branch mytree)
+(newline)
+(symbols mytree)
+(newline)
+(weight mytree)

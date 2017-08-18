@@ -61,4 +61,5 @@
 
 
 ;; main
-(sample-tree)
+(decode sample-message (sample-tree))
+;; result: (mcons 'a (mcons 'd (mcons 'a (mcons 'b (mcons 'b (mcons 'c (mcons 'a '())))))))

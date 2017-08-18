@@ -27,19 +27,20 @@
 (define (weight tree)
   (if (leaf? tree)
       (weight-leaf tree)
-      (caddr tree)))
+      (cadddr tree)))
 
 ;; test
-(define mytree (make-code-tree
-                (make-leaf (make-code-tree
-                            (make-leaf 'A 1)
-                            (make-leaf 'D 9)) 10)
-                (make-leaf 'C 2)))
+(define (sample-tree)
+  (make-code-tree (make-leaf 'A 4)
+                  (make-code-tree
+                   (make-leaf 'B 2)
+                   (make-code-tree (make-leaf 'D 1)
+                                   (make-leaf 'C 1)))))
 
-(left-branch mytree)
+(left-branch (sample-tree))
 (newline)
-(right-branch mytree)
+(right-branch (sample-tree))
 (newline)
-(symbols mytree)
+(symbols (sample-tree))
 (newline)
-(weight mytree)
+(weight (sample-tree))

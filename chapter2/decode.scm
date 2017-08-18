@@ -47,7 +47,7 @@
 (define (weight tree)
   (if (leaf? tree)
       (weight-leaf tree)
-      (caddr tree)))
+      (cadddr tree)))
 
 (define (weight-leaf x) (caddr x))
 
@@ -55,11 +55,11 @@
 (define my-bits (list 1))
 ;; 先遍历左树后右树
 (define my-bits2 (list 0 1))
-(define my-tree (make-code-tree
-                (make-leaf (make-code-tree
-                            (make-leaf 'A 1)
-                            (make-leaf 'D 9)) 10)
-                (make-leaf 'C 2)))
+(define my-tree (make-code-tree (make-leaf 'A 4)
+                                (make-code-tree
+                                 (make-leaf 'B 2)
+                                 (make-code-tree (make-leaf 'D 1)
+                                                 (make-leaf 'C 1)))))
 
 (display my-tree)
 (newline)

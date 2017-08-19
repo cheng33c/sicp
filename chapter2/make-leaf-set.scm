@@ -4,7 +4,7 @@
 (define (make-leaf symbol weight)
   (list 'leaf symbol weight))
 
-(define (weight-leaf x) (cadddr x))
+(define (weight-leaf x) (caddr x))
 (define (symbol-leaf x) (cadr x))
 
 (define (leaf? object)
@@ -18,7 +18,7 @@
 (define (weight tree)
   (if (leaf? tree)
       (weight-leaf tree)
-      (caddr tree)))
+      (cadddr tree)))
 
 ;; main
 (define (adjoin-set x set)
@@ -42,6 +42,6 @@
         (append (symbols left) (symbols right))
         (+ (weight left) (weight right))))
 
-(define my-pair (list (list 'leaf 'a 3) (list 'leaf 'b 6)))
+(define my-pair (list (list 'a 3)))
 
 (make-leaf-set my-pair)

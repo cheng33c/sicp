@@ -20,6 +20,7 @@
 (define (make-from-mag-ang r a)
   (cons (* r (cos a)) (* r (sin a))))
 
+;; complex operation
 (define (add-complex z1 z2)
   (make-from-real-imag (+ (real-part z1) (real-part z2))
                        (+ (imag-part z1) (imag-part z2))))
@@ -29,9 +30,9 @@
                        (- (imag-part z1) (imag-part z2))))
 
 (define (mul-complex z1 z2)
-  (make-from-real-imag (* (real-part z1) (real-part z2))
-                       (+ (imag-part z1) (imag-part z2))))
+  (make-from-real-imag (* (magnitude z1) (magnitude z2))
+                       (+ (angle z1) (angle z2))))
 
 (define (div-complex z1 z2)
-  (make-from-real-imag (/ (real-part z1) (real-part z2))
-                       (- (imag-part z1) (imag-part z2))))
+  (make-from-real-imag (/ (magnitude z1) (magnitude z2))
+                       (- (angle z1) (angle z2))))

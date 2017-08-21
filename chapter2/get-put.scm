@@ -1,7 +1,5 @@
 #lang planet neil/sicp
 
-;; require
-(define (square x) (* x x))
 ;; sicp P187
 (define (make-table)
   (let ((local-table (list '*table*)))
@@ -35,4 +33,3 @@
 (define operation-table (make-table))
 (define get (operation-table 'lookup-proc))
 (define put (operation-table 'insert-proc))
-

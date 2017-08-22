@@ -34,11 +34,19 @@
     dispatch))
 (define operation-table (make-table))
 (define get (operation-table 'lookup-proc))
-(define put (operation-table 'insert-proc))
+(define put (operation-table 'insert-proc!))
 
 
 
 ;; main
+(define (type-tag datum)
+  (if (pair? datum)
+      (car datum)
+      (error "Bad tagged datum -- TYPE-TAG" datum)))
+(define (contents datum)
+  (if (pair? datum)
+      (cdr datum)
+      (error "Bad tagged datum -- CONTENTS" datum)))
 (define (attach-tag type-tag contents)
   (cons type-tag contents))
 
@@ -98,4 +106,4 @@
 (define (real-part z) (apply-generic 'real-part z))
 (define (imag-part z) (apply-generic 'imag-part z))
 (define (magnitude z) (apply-generic 'magnitude z))
-(define (angle z) (apple-generic 'angle z))
+(define (angle z) (apply-generic 'angle z))

@@ -49,5 +49,4 @@
         (else
          (error "unknow expression type -- DERIV" exp))))
 
-
 (deriv '(** x 3) 'x)

@@ -33,18 +33,29 @@
 (define operation-table (make-table))
 (define get (operation-table 'lookup-proc))
 (define put (operation-table 'insert-proc!))
+(define (type-tag datum)
+  (if (pair? datum)
+      (car datum)
+      (error "Bad tagged datum -- TYPE-TAG" datum)))
 
 ;; main
+(define (apply-generic op name file)
+  (let ((type-name (type-tag (car file)))) 
+    (let ((proc (get op type-name))) 
+      (if proc 
+          (proc name file) 
+          (error "no result")))))
+
 (define (install-employee-package)
-  (define (get-record file employee)
+  (define (get-record employee file)
     (if (null? file)
         (error "not found " employee)
         (if (eq? (get-name (car file)) employee)
             (car file)
-            (get-record (cdr file) employee))))
+            (get-record employee (cdr file)))))
 
   (define (get-name file)
-    (car file))
+    (cadr file))
   
   (put 'get-record 'employee get-record)
   (put 'get-name 'employee get-name)
@@ -52,5 +63,6 @@
 
 
 (install-employee-package)
-(get-record (list (list 'kevin 30) (list 'mark 20))
-            'mark)
+(apply-generic 'get-record 'mark
+               (list (list 'employee 'kevin 30)
+                     (list 'employee 'mark 20)))

@@ -1,6 +1,6 @@
 #lang planet neil/sicp
 
-;; get put methods
+;; require
 (define (make-table)
   (let ((local-table (list '*table*)))
     (define (lookup key-1 key-2)
@@ -38,7 +38,8 @@
       (car datum)
       (error "Bad tagged datum -- TYPE-TAG" datum)))
 
-;; main
+;; e.g. (list 'Mark (list 'branch 'info) (list 'salary '$200))
+
 (define (apply-generic op name file)
   (let ((type-name (type-tag (car file)))) 
     (let ((proc (get op type-name)))
@@ -46,23 +47,31 @@
           (proc name file)
           (error "no result")))))
 
-(define (install-employee-package)
-  (define (get-record employee file)
-    (if (null? file)
-        (error "not found " employee)
-        (if (eq? (get-name (car file)) employee)
-            (car file)
-            (get-record employee (cdr file)))))
+(define (install-salary-package)
 
-  (define (get-name file)
-    (cadr file))
-  
-  (put 'get-record 'employee get-record)
+  (define (salary? employee-info)
+    (cond ((null? employee-info)
+           (error "can't find salary"))
+          ((and (pair? (car employee-info))
+                (eq? (car (car employee-info)) 'salary))
+           (car employee-info))
+          (else (salary? (cdr employee-info)))))
+  (define (get-name pair) (cadr pair))
+
+  (define (get-salary name file)
+    (let ((employee (car file)))
+      (if (eq? name (get-name employee))
+          (salary? employee)
+          (get-salary name (cdr file)))))
+
+  (put 'salary? 'employee salary?)
   (put 'get-name 'employee get-name)
+  (put 'get-salary 'employee get-salary)
+
   'done)
 
-
-(install-employee-package)
-(apply-generic 'get-record 'mark
-               (list (list 'employee 'kevin 30)
-                     (list 'employee 'mark 20)))
+(install-salary-package)
+(apply-generic 'get-salary 'Kevin
+               (list
+                (list 'employee 'Mark (list 'branch 'info) (list 'salary '$200))
+                (list 'employee 'Kevin (list 'branch 'sale) (list 'salary '$500))))

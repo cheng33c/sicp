@@ -37,7 +37,6 @@
   (if (pair? datum)
       (car datum)
       (error "Bad tagged datum -- TYPE-TAG" datum)))
-
 (define (apply-generic op name file)
   (let ((type-name (type-tag (car file)))) 
     (let ((proc (get op type-name)))
@@ -45,35 +44,46 @@
           (proc name file)
           (error "no result")))))
 
-;; e.g. (list 'Mark (list 'branch 'info) (list 'salary '$200))
+;; main
+(define (install-find-package)
 
+  (define (get-name file)
+    (cadr file))
 
-(define (install-salary-package)
+  (define (get-record employee file)
+    (if (null? file)
+        (error "not found " employee)
+        (if (eq? (get-name (car file)) employee)
+            (car file)
+            (get-record employee (cdr file)))))
+  
+  (define (find-employee-record name list)
+    (define (iter result current-list)
+      (cond ((null? current-list) result)
+            ((and (pair? current-list)
+                  (eq? (get-name (car current-list)) name))
+             (iter
+              (append result (get-record name current-list))
+              (cdr current-list)))
+            (else (iter result (cdr current-list)))))
+    (iter '() list))
 
-  (define (salary? employee-info)
-    (cond ((null? employee-info)
-           (error "can't find salary"))
-          ((and (pair? (car employee-info))
-                (eq? (car (car employee-info)) 'salary))
-           (car employee-info))
-          (else (salary? (cdr employee-info)))))
-  (define (get-name pair) (cadr pair))
-
-  (define (get-salary name file)
-    (let ((employee (car file)))
-      (if (eq? name (get-name employee))
-          (salary? employee)
-          (get-salary name (cdr file)))))
-
-  (put 'salary? 'employee salary?)
+  (put 'find-employee-record 'employee find-employee-record)
   (put 'get-name 'employee get-name)
-  (put 'get-salary 'employee get-salary)
-
+  (put 'get-record 'employee get-record)
+  
   'done)
 
+
 ;; test
-(install-salary-package)
-(apply-generic 'get-salary 'Kevin
+(install-find-package)
+(display
+ (apply-generic 'find-employee-record 'Kevin
                (list
                 (list 'employee 'Mark (list 'branch 'info) (list 'salary '$200))
-                (list 'employee 'Kevin (list 'branch 'sale) (list 'salary '$500))))
+                (list 'employee 'Kevin (list 'branch 'sale) (list 'salary '$500))
+                (list 'employee 'Bob (list 'branch 'sport) (list 'salary '$900))
+                (list 'employee 'Evan (list 'branch 'info) (list 'salary '$600))
+                (list 'employee 'Kevin (list 'branch 'clean) (list 'salary '$600)))))
+
+;; d) 安装新的package

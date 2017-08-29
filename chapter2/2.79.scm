@@ -1,6 +1,7 @@
 #lang planet neil/sicp
 
 ;; require
+(define (square x) (* x x))
 (define (make-table)
   (let ((local-table (list '*table*)))
     (define (lookup key-1 key-2)
@@ -51,6 +52,60 @@
           (error
            "No method for these types -- APPLY-GENERIC"
            (list op type-tags))))))
+(define (install-polar-package)
+  (define (real-part z)
+    (* (magnitude z) (cos (angle z))))
+  (define (imag-part z)
+    (* (magnitude z) (sin (angle z))))
+  (define (make-from-real-imag x y)
+    (cons (sqrt (+ (square x) (square y)))
+          (atan y x)))
+  (define (magnitude z) (car z))
+  (define (angle z) (cdr z))
+  (define (make-from-mag-ang r a) (cons r a))
+
+  ;; interface to the rest of the system
+  (define (tag x) (attach-tag 'polar x))
+  (put 'real-part '(polar) real-part)
+  (put 'imag-part '(polar) imag-part)
+  (put 'magnitude '(polar) magnitude)
+  (put 'angle '(polar) angle)
+  (put 'make-from-real-imag 'polar
+       (lambda (x y) (tag (make-from-real-imag x y))))
+  (put 'make-from-mag-ang 'polar
+       (lambda (r a) (tag (make-from-mag-ang r a))))
+  (put 'equ? '(polar polar)
+       (lambda (x y)
+         (and (= (magnitude x) (magnitude y)) 
+              (= (angle x) (angle y)))))
+  'done)
+(define (install-rectangular-package)
+  (define (real-part z) (car z))
+  (define (imag-part z) (cdr z))
+  (define (make-from-real-imag x y) (cons x y))
+  (define (magnitude z)
+    (sqrt (+ (square (real-part z))
+             (square (imag-part z)))))
+  (define (angle z)
+    (atan (imag-part z) (real-part z)))
+  (define (make-from-mag-ang r a)
+    (cons (* r (cos a)) (* r (sin a))))
+
+  ;; interface to the rest of the system
+  (define (tag x) (attach-tag 'rectangular x))
+  (put 'real-part '(rectangular) real-part)
+  (put 'imag-part '(rectangular) imag-part)
+  (put 'magnitude '(rectangular) magnitude)
+  (put 'angle '(rectangular) angle)
+  (put 'make-from-real-imag 'rectangular
+       (lambda (x y) (tag (make-from-real-imag x y))))
+  (put 'make-from-mag-ang 'rectangular
+       (lambda (r a) (tag (make-from-mag-ang r a))))
+  (put 'equ? '(rectangular rectangular)
+       (lambda (x y)
+         (and (= (real-part x) (real-part y))
+              (= (imag-part x) (imag-part y)))))
+  'done)
 
 ;; main
 (define (install-complex-package)
@@ -92,7 +147,7 @@
        (lambda (x y) (tag (make-from-real-imag x y))))
   (put 'make-from-mag-ang 'complex
        (lambda (r a) (tag (make-from-mag-ang r a))))
-  (put 'equ? '(rectangular rectangular) equ?)
+  (put 'equ? '(complex complex) equ?)
   'done)
 
 (define (install-scheme-number-package)
@@ -158,12 +213,14 @@
 (define (make-rational n d)
   ((get 'make 'rational) n d))
 (define (make-complex-from-real-imag x y)
-  ((get 'make-from-real-imag 'complex) x y))
+  ((get 'make-from-real-imag 'rectangular) x y))
 (define (make-complex-from-mag-ang r a)
-  ((get 'make-from-mag-ang 'complex) r a))
+  ((get 'make-from-mag-ang 'polar) r a))
 
-;; main & changed part
+;; test
 (install-rational-package)
+(install-polar-package)
+(install-rectangular-package)
 (install-scheme-number-package)
 (install-complex-package)
 (define (equ? x y) (apply-generic 'equ? x y))
@@ -171,5 +228,7 @@
 (equ? (make-rational 3 5) (make-rational 3 1))
 (equ? (make-scheme-number 5) (make-scheme-number 5))
 (equ? (make-scheme-number 5) (make-scheme-number 3))
-(display (make-complex-from-mag-ang 5 5))
-(apply-generic 'add (make-complex-from-mag-ang 5 5) (make-complex-from-mag-ang 5 5))
+(equ? (make-complex-from-real-imag 5 5) (make-complex-from-real-imag 5 5))
+(equ? (make-complex-from-real-imag 5 3) (make-complex-from-real-imag 5 5))
+(equ? (make-complex-from-mag-ang 5 5) (make-complex-from-mag-ang 5 5))
+(equ? (make-complex-from-mag-ang 5 3) (make-complex-from-mag-ang 5 5))

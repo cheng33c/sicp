@@ -79,6 +79,3 @@
   ((get 'make-from-real-imag 'complex) x y))
 (define (make-complex-from-mag-ang r a)
   ((get 'make-from-mag-ang 'complex) r a))
-
-(install-complex-package)
-(make-complex-from-real-imag 3 5)

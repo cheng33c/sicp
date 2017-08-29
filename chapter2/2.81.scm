@@ -49,7 +49,7 @@
     (let ((proc (get op type-tags)))
       (if proc
           (apply proc (map contents args))
-          (if (= length args) 2
+          (if (= (length args) 2)
               (let ((type1 (car type-tags))
                     (type2 (cadr type-tags))
                     (a1 (car args))

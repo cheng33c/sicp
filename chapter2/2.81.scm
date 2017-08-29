@@ -54,17 +54,22 @@
                     (type2 (cadr type-tags))
                     (a1 (car args))
                     (a2 (cadr args)))
-                (let ((t1->t2 (get-coercion type1 type2))
-                      (t2->t1 (get-coercion type2 type1)))
-                  (cond (t1->t2
-                         (apply-generic op (t1->t2 a1) a2))
-                        (t2->t1
-                         (apply-generic op a1 (t2->t1 a2)))
-                        (else
-                         (error "No method for these types"
-                                (list op type-tags))))))
+                (if (eq? type1 type2) ;; changed part
+                    (error "can't coverse same type" type1) ;; changed part
+                    (let ((t1->t2 (get-coercion type1 type2))
+                          (t2->t1 (get-coercion type2 type1)))
+                      (cond (t1->t2
+                             (apply-generic op (t1->t2 a1) a2))
+                            (t2->t1
+                             (apply-generic op a1 (t2->t1 a2)))
+                            (else
+                             (error "No method for these types"
+                                    (list op type-tags)))))))
               (error "No method for these types"
                      (list op type-tags)))))))
+(define coercion-table (make-table))
+(define get-coercion (coercion-table 'lookup-proc))
+(define put-coercion (coercion-table 'insert-proc!))
 
 
 ;; main
@@ -117,8 +122,10 @@
        (lambda (x y) (tag (/ x y))))
   (put 'make 'scheme-number
        (lambda (x) (tag x)))
-  (put 'exp '(scheme-number scheme-number)
-       (lambda (x y) (tag (expt x y))))
+  ;(put 'exp '(scheme-number scheme-number)
+  ;    (lambda (x y) (tag (expt x y))))
+  (put-coercion 'scheme-number 'scheme-number 
+                scheme-number->scheme-number)
   'done)
 
 (define (make-scheme-number n)
@@ -131,4 +138,19 @@
 
 ;; test
 (install-scheme-number-package)
-(exp (make-complex-from-real-imag 5 3) (make-complex-from-real-imag 2 9))
+(exp (make-scheme-number 5) (make-scheme-number 2))
+
+
+;; problem a)
+;; 会出现死循环程序一直运转无法退出
+
+;; problem b)
+;; 没有，且`apply-generic`无法像原来正常工作
+;; 因为这个程序当找不到`exp`时就进行强制转换然后再查找
+;; 但是强制转换还是转换成原来的类型，所以仍然找不到
+;; 这样就产生了死循环
+
+;; problem c)
+;; 见本程序的`apply-generic`。如果要验证 problem a
+;; 请将本程序的`apply-generic`替换为`apply-generic2.scm`
+;; 即书中P134的`apply-generic`

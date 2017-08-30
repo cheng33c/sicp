@@ -1,0 +1,168 @@
+#lang planet neil/sicp
+
+;; require
+(define (square x) (* x x))
+(define (make-table)
+  (let ((local-table (list '*table*)))
+    (define (lookup key-1 key-2)
+      (let ((subtable (assoc key-1 (cdr local-table))))
+        (if subtable
+            (let ((record (assoc key-2 (cdr subtable))))
+              (if record
+                  (cdr record)
+                  false))
+            false)))
+    (define (insert! key-1 key-2 value)
+      (let ((subtable (assoc key-1 (cdr local-table))))
+        (if subtable
+            (let ((record (assoc key-2 (cdr subtable))))
+              (if record
+                  (set-cdr! record value)
+                  (set-cdr! subtable
+                            (cons (cons key-2 value)
+                                  (cdr subtable)))))
+            (set-cdr! local-table
+                      (cons (list key-1
+                                  (cons key-2 value))
+                            (cdr local-table)))))
+      'ok)
+    (define (dispatch m)
+      (cond ((eq? m 'lookup-proc) lookup)
+            ((eq? m 'insert-proc!) insert!)
+            (else (error "Unknow operation -- TABLE" m))))
+    dispatch))
+(define operation-table (make-table))
+(define get (operation-table 'lookup-proc))
+(define put (operation-table 'insert-proc!))
+(define (attach-tag type-tag contents)
+  (cons type-tag contents))
+(define (type-tag datum)
+  (if (pair? datum)
+      (car datum)
+      (error "Bad tagged datum -- TYPE-TAG" datum)))
+(define (contents datum)
+  (if (pair? datum)
+      (cdr datum)
+      (error "Bad tagged datum -- CONTENTS" datum)))
+(define (apply-generic2 op . args)
+  (let ((type-tags (map type-tag args)))
+    (let ((proc (get op type-tags)))
+      (if proc
+          (apply proc (map contents args))
+          (if (= (length args) 2)
+              (let ((type1 (car type-tags))
+                    (type2 (cadr type-tags))
+                    (a1 (car args))
+                    (a2 (cadr args)))
+                (let ((higher (higher-type? type1 type2)))
+                  (if (eq? type1 higher)
+                      (raise (cadr args))
+                      (raise (car args))))))))))
+(define (get-level type)
+  (cond ((eq? type 'integer) 0)
+        ((eq? type 'rational) 1)
+        ((eq? type 'real) 2)
+        ((eq? type 'complex) 3)))
+
+(define (higher-type? type1 type2)
+  (let ((level1 (get-level type1))
+        (level2 (get-level type2)))
+    (cond ((> level1 level2) type1)
+          ((> level2 level1) type2)
+          ((= level1 level2)
+           (error "ERROR --- higher-type?")))))
+(define coercion-table (make-table))
+(define get-coercion (coercion-table 'lookup-proc))
+(define put-coercion (coercion-table 'insert-proc!))
+
+
+;; main
+(define (make-rat n d)
+  (let ((g (gcd n d)))
+    (cons (/ n g) (/ d g))))
+(define (make-real x)
+  ((get 'make 'real) x))
+(define (make-integer x)
+  ((get 'make 'integer) x))
+(define (make-rational n d)
+  ((get 'make 'rational) n d))
+(define (raise x)
+  (apply-generic2 'raise x))
+(define (raise2 x y)
+  (apply-generic2 'raise x y))
+(define (drop x)
+  (apply-generic2 'drop x))
+(define (make-complex-from-real-imag x y)
+  ((get 'make-from-real-imag 'rectangular) x y))
+(define (number x) (car x))
+(define (denom x) (cdr x))
+
+(define (install-integer-package)
+  (define (tag x) (attach-tag 'integer x))
+  (put 'tag 'integer tag)
+  (put 'raise '(integer)
+       (lambda (x) ((get 'make 'rational) x 1)))
+  (put 'make 'integer
+       (lambda (x) (tag x))))
+
+(define (install-rational-package)
+  (define (tag x) (attach-tag 'rational x))
+  (define (drop x)
+    (if (= (denom x) 1)
+        (make-integer x)
+        (error "ERROR -- DROP RATIONAL TO INTEGER")))
+  (put 'make 'rational
+       (lambda (n d) (tag (make-rat n d))))
+  (put 'raise '(rational)
+       (lambda (x) (make-real x)))
+  (put 'drop '(rational) drop))
+
+;; 实数是否能转为有理数有一定的困难
+;; 所以该解数学意义上不完全正确
+;; 主要困难在于有理数的判断。
+;; 无限不循环和无限循环之间的判断和是否能除尽的判断
+(define (install-real-package)
+  (define (tag x) (attach-tag 'real x))
+  (define (drop x) (make-rational (number x) (denom x)))
+  (put 'tag 'real tag)
+  (put 'make 'real (lambda (x) (tag x)))
+  (put 'drop '(real) drop))
+  
+(define (install-rectangular-package)
+  (define (real-part z) (car z))
+  (define (imag-part z) (cdr z))
+  (define (make-from-real-imag x y) (cons x y))
+  (define (magnitude z)
+    (sqrt (+ (square (real-part z))
+             (square (imag-part z)))))
+  (define (angle z)
+    (atan (imag-part z) (real-part z)))
+  (define (make-from-mag-ang r a)
+    (cons (* r (cos a)) (* r (sin a))))
+  (define (drop z)
+    (if (= (imag-part z) 0)
+        (make-real (real-part z))
+        (error "ERROR DROP -- IMAG PART NOT EQUAL TO ZERO")))
+  (define (tag x) (attach-tag 'rectangular x))
+  (put 'real-part '(rectangular) real-part)
+  (put 'imag-part '(rectangular) imag-part)
+  (put 'magnitude '(rectangular) magnitude)
+  (put 'angle '(rectangular) angle)
+  (put 'make-from-real-imag 'rectangular
+       (lambda (x y) (tag (make-from-real-imag x y))))
+  (put 'make-from-mag-ang 'rectangular
+       (lambda (r a) (tag (make-from-mag-ang r a))))
+  (put 'drop '(rectangular) drop)
+  'done)
+
+
+;; install
+(install-real-package)
+(install-integer-package)
+(install-rational-package)
+(install-rectangular-package)
+
+;; test
+(drop (make-complex-from-real-imag 2 0))
+(drop (make-rational 3 1))
+(drop (make-rational 3 0))

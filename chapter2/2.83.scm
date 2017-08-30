@@ -70,22 +70,9 @@
 (define coercion-table (make-table))
 (define get-coercion (coercion-table 'lookup-proc))
 (define put-coercion (coercion-table 'insert-proc!))
-(define (make-from-real-imag x y)
-  (define (dispatch op)
-    (cond ((eq? op 'real-part) x)
-          ((eq? op 'imag-part) y)
-          ((eq? op 'magnitude)
-           (sqrt (+ (square x) (square y))))
-          (else
-           (error "Unknow op -- MAKE-FROM-REAL-IMAG" op))))
-  dispatch)
-
-
 
 ;; main
 
-(define (number x) (car x))
-(define (denom x) (cdr x))
 (define (make-rat n d)
   (let ((g (gcd n d)))
     (cons (/ n g) (/ d g))))

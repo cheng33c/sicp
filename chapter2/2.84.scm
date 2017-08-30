@@ -67,11 +67,23 @@
                                     (list op type-tags)))))))
               (error "No method for these types"
                      (list op type-tags)))))))
+(define (apply-generic2 op . args)
+  (let ((type-tags (map type-tag args)))
+    (let ((proc (get op type-tags)))
+      (if proc
+          (apply proc (map contents args))
+          (if (= (length args) 2)
+              (let ((type1 (car type-tags))
+                    (type2 (cadr type-tags))
+                    (a1 (car args))
+                    (a2 (cadr args)))
+                (let ((higher (higher-type? type1 type2)))
+                  (if (eq? type1 higher)
+                      (raise (cadr args))
+                      (raise (car args))))))))))
 (define coercion-table (make-table))
 (define get-coercion (coercion-table 'lookup-proc))
 (define put-coercion (coercion-table 'insert-proc!))
-
-;; main
 
 (define (make-rat n d)
   (let ((g (gcd n d)))
@@ -83,7 +95,9 @@
 (define (make-rational n d)
   ((get 'make 'rational) n d))
 (define (raise x)
-  (apply-generic 'raise x))
+  (apply-generic2 'raise x))
+(define (raise2 x y)
+  (apply-generic2 'raise x y))
 
 (define (install-integer-package)
   (define (tag x) (attach-tag 'integer x))
@@ -105,11 +119,24 @@
   (put 'tag 'real tag)
   (put 'make 'real (lambda (x) (tag x))))
 
+;; main
+(define (get-level type)
+  (cond ((eq? type 'integer) 0)
+        ((eq? type 'rational) 1)
+        ((eq? type 'real) 2)
+        ((eq? type 'complex) 3)))
+
+(define (higher-type? type1 type2)
+  (let ((level1 (get-level type1))
+        (level2 (get-level type2)))
+    (cond ((> level1 level2) type1)
+          ((> level2 level1) type2)
+          ((= level1 level2)
+           (error "ERROR --- higher-type?")))))
 
 
 (install-real-package)
 (install-rational-package)
 (install-integer-package)
 
-(raise (make-integer 5))
-(raise (make-rational 3 7))
+(raise2 (make-integer 5) (make-rational 1 0))

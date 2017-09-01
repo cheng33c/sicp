@@ -1,4 +1,4 @@
-#lang racket
+#lang planet neil/sicp
 
 (define (sub-terms L1 L2)
   (cond ((empty-termlist? L1)
@@ -10,7 +10,7 @@
            (cond ((=zero? L1)
                   (adjoin-term
                    (make-term (order t1) (- (coeff t1)))
-                   (sub-terms L1 (rest-term L2))))
+                   (sub-terms L1 (rest-terms L2))))
                  ((> (order t1) (order t2))
                   (adjoin-term
                    t1 (sub-terms (rest-terms L1) L2)))
@@ -38,20 +38,7 @@
   (define (same-variable? v1 v2)
     (and (variable? v1) (variable? v2) (eq? v1 v2)))
   (define (variable? x) (symbol? x))
-  (define (add-poly p1 p2)
-    (if (same-variable? (variable p1) (variable p2))
-        (make-poly (variable p1)
-                   (add-terms (term-list p1)
-                              (term-list p2)))
-        (error "polys not in same var -- ADD-POLY"
-               (list p1 p2))))
-  (define (mul-poly p1 p2)
-    (if (same-variable? (variable p1) (variable p2))
-        (make-poly (variable p1)
-                   (mul-terms (term-list p1)
-                              (term-list p2)))
-        (error "Polys not in same var -- MUL-POLY"
-               (list p1 p2))))
+  
   (define (sub-poly p1 p2)
     (if (same-variable? (variable p1) (variable p2))
         (make-poly (variable p1)

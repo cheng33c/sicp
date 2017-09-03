@@ -23,4 +23,4 @@
                                 (term-list p2)))) 
         (list (make-poly (variable p1) (car results)) (cadr results))) 
       (error "Polys not in same var -- div-poly" 
-             (list p1 p2)))) 
+             (list p1 p2))))

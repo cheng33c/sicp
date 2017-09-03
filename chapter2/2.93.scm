@@ -192,6 +192,5 @@
 (define (=zero? x) (apply-generic '=zero? x))
 
 
-
-
-(make-rational p1 p2)
+(define rf (make-rational p1 p2))
+(display rf)

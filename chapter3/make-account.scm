@@ -1,4 +1,4 @@
- (define (make-account balance)
+(define (make-account balance)
   (define (withdraw amount)
     (if (>= balance amount)
         (begin (set! balance (- balance amount))

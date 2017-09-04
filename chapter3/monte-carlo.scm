@@ -1,4 +1,10 @@
-(define (extimate-pi trials)
+(define rand
+  (let ((x random-init))
+    (lambda ()
+      (set! x (rand-update x))
+      x)))
+
+(define (estimate-pi trials)
   (sqrt (/ 6 (monte-carlo trials cesaro-test))))
 
 (define (cesaro-test)

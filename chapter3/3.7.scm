@@ -34,4 +34,4 @@
 (define peter-acc (make-account 100 'peter))
 (define paul-acc
   (make-joint peter-acc 'peter 'paul))
-((peter-acc 'paul 'withdraw) 100)
+((peter-acc 'paul 'deposit) 2000)

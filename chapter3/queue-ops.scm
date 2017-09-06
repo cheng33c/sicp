@@ -27,3 +27,8 @@
         (else
          (set-front-ptr! queue (cdr (front-ptr queue)))
          queue)))
+
+
+
+(define q1 (make-queue))
+(insert-queue! q1 'a)

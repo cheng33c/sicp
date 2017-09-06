@@ -16,7 +16,3 @@
 (define two (cons (cons 1 '()) '())) ;; 2
 (define three (cons (cons 1 '()) (cons 2 '()))) ;; 3
 (define seven (cons three three))
-
-(count-pairs two) ;; 1
-(count-pairs three) ;; 2
-(count-pairs seven) ;; 3

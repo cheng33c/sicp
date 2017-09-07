@@ -32,3 +32,6 @@
 
 (define q1 (make-queue))
 (insert-queue! q1 'a)
+(insert-queue! q1 'b)
+(insert-queue! q1 'c)
+(insert-queue! q1 'd)

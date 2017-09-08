@@ -52,18 +52,20 @@
   (define (iter current-deque new-deque)
     (if (null? (cddr current-deque))
         (begin
-          (set-front-ptr! deque (cons new-deque (car current-deque)))
-          (set-rear-ptr! deque (car current-deque))
+          (set-cdr! new-deque '())
+          (set-rear-ptr! current-deque new-deque)
           deque)
-        (iter (cdr current-deque)
-              (list new-deque (car current-deque)))))
+        (iter current-deque (cdr new-deque))))
   (cond ((empty-deque? deque)
          (error "REAR-DELETE error -- deque empty" deque))
         ((null? (cdr (front-ptr deque)))
          (set-front-ptr! deque '())
-         (set-rear-ptr! deque '()))
+         deque)
         (else
-         (iter (front-ptr deque) '()))))
+         (iter deque (front-ptr deque)))))
+
+(define (print-deque deque)
+  (car deque))
 
 ;; test example
 (define d (make-deque))

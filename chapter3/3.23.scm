@@ -17,15 +17,11 @@
       (car (rear-ptr deque))))
 
 (define (front-insert-deque! deque item)
-  (let ((new-pair (cons item '())))
-    (cond ((empty-deque? deque)
-           (set-front-ptr! deque new-pair)
-           (set-rear-ptr! deque new-pair)
-           deque)
-          (else
-           (set-cdr! (rear-ptr deque) new-pair)
-           (set-rear-ptr! deque new-pair)
-           deque))))
+  (cond ((empty-deque? deque)
+         (rear-insert-deque! deque item))
+        (else
+         (set-front-ptr! deque (cons item (front-ptr deque)))
+         deque)))
 
 (define (front-delete-deque! deque)
   (cond ((empty-deque? deque)

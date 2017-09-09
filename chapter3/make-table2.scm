@@ -1,3 +1,10 @@
+
+(define (assoc key records)
+  (cond ((null? records) false)
+        ((equal? key (caar records)) (car records))
+        (else (assoc key (cdr records)))))
+
+
 (define (make-table)
   (let ((local-table (list '*table*)))
     (define (lookup key-1 key-2)

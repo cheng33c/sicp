@@ -1,3 +1,5 @@
+;;; same as insert! produce
+
 (define (insert! key-1 key-2 value table)
   (let ((subtable (assoc key-1 (cdr table))))
     (if subtable

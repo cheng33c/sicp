@@ -4,4 +4,4 @@
         (and-gate a b c)
         (inverter c e)
         (and-gate d e s)
-        'ok'))
+        'ok))

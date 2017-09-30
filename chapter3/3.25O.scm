@@ -5,10 +5,10 @@
 	    ((equal? key (caar records)) (car records)) 
 	    (else (assoc key (cdr records))))) 
     
-    (define (lookup key-list) 
-      (define (iter keys table) 
-	(cond ((null? keys) false) ;;为空时 
-	      ((null? (cdr keys))  ;;只有一个key时 
+    (define (lookup key-list)
+      (define (iter keys table)
+	(cond ((null? keys) false) ;;为空时
+	      ((null? (cdr keys))  ;;只有一个key时
 	       (let ((record (assoc (car keys) (cdr table)))) 
 		 (if record 
 		     (cdr record) 
@@ -43,11 +43,11 @@
 				     ;;这里是关键，没找到subtable时，创建新的，然后循环(cdr keys) 
 				     (cdr table))))))))
       (iter key-list local-table) 
-      'ok)  
+      'ok)
     (define (dispatch m) 
       (cond ((eq? m 'lookup-proc) lookup) 
 	    ((eq? m 'insert-proc!) insert!) 
-	    (else (error "Unknown operation -- TABLE" m)))) 
+	    (else (error "Unknown operation -- TABLE" m))))
     dispatch)) 
 
 (define (lookup table . key-list) ((table 'lookup-proc) key-list)) 

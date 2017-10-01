@@ -1,4 +1,5 @@
 (load "call-each.scm")
+(load "wire-ops.scm")
 
 (define (make-wire)
   (let ((signal-value 0) (action-procedures '()))

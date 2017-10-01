@@ -1,3 +1,5 @@
+(load "call-each.scm")
+
 (define (make-wire)
   (let ((signal-value 0) (action-procedures '()))
     (define (set-my-signal! new-value)

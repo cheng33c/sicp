@@ -12,4 +12,4 @@
 (define (logical-or a1 a2)
   (cond ((or (= a1 1) (= a2 1)) 1)
         ((and (= a1 0) (= a2 0)) 0)
-        (else (error "Invalid signal" s))))
+        (else (error "ERROR logical-or -- Invalid signal"))))

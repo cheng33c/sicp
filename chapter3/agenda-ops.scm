@@ -66,4 +66,4 @@
                segments))
         (add-to-segments! segments))))
 
-
+(define (first-segment agenda) (car (segments agenda)))
